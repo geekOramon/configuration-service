@@ -1,21 +1,21 @@
----
 server:
   port: 8888
 spring:
   cloud:
     config:
+      name: prototype-config-micro-one
+      profile: dev
+---
+spring:
+  cloud:
+    config:
       server:
-        encrypt:
-          enabled: false
         git:
-          uri: https://github.com/javierOramon/configurations-prototype # default
-          username: javierOramon
-          password: JaviOramon2501.
-          search-paths:
-            - 'station*'
+          uri: https://github.com/AlfredoOramon/{application}-{profile}
           repos:
-             perf:
-                pattern: '*/perf'
-                uri: https://github.com/javierOramon/confugarions-prototype-perf.git # alt
-                search-paths:
-                 - 'station*'
+            microservice1:
+              pattern: '*/development,*/staging'
+              uri: https://github.com/AlfredoOramon/prototype-config-micro-one-dev
+
+            #microservice2:
+            #microservice3:
