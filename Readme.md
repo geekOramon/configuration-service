@@ -8,3 +8,11 @@ And our server will give credentials to the clients to access to the parts allow
 In the application.yml we have the configuration which our server can access to the github.
 
 In URIConfigurations we will have the users with your permissions and the url's which they can access
+
+
+Client in python:
+
+In the same folder of the project
+
+
+python attack_url.py --url "http://localhost:8888/your_url" --user youruser --pass yourpass
