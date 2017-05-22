@@ -1,4 +1,4 @@
-package oramon.rocketpower.javi.application;
+package oramon.saiyan.application;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,9 @@ public class URIConfigurations
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("antonio").password("lolo1234").roles("MANIACO", "COJO");
-        auth.inMemoryAuthentication().withUser("antonio1").password("lolo1234").roles("COJO");
+        auth.inMemoryAuthentication().withUser("developer").password("chibiGoku").roles("DEVELOPER");
+        auth.inMemoryAuthentication().withUser("leader").password("kaioken").roles("LEAD", "DEVELOPER");
+        auth.inMemoryAuthentication().withUser("god").password("gokuSSJ3").roles("ADMIN", "LEAD", "DEVELOPER");
     }
 
     @Override
@@ -24,8 +25,8 @@ public class URIConfigurations
         http
                 .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/prototype-config-micro-one/dev").access("hasRole('ROLE_MANIACO')")
-                .antMatchers("/prototype-config-micro-one/qa").access("hasRole('ROLE_COJO')");
+                .antMatchers("/micro-config-template/dev").access("hasRole('ROLE_DEVELOPER')")
+                .antMatchers("/micro-config-template/qa").access("hasRole('ROLE_LEAD')");
     }
 
 }
