@@ -15,9 +15,9 @@ public class URIConfigurations
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("developer").password("chibiGoku").roles("DEVELOPER");
-        auth.inMemoryAuthentication().withUser("leader").password("kaioken").roles("LEAD", "DEVELOPER");
-        auth.inMemoryAuthentication().withUser("god").password("gokuSSJ3").roles("ADMIN", "LEAD", "DEVELOPER");
+        auth.inMemoryAuthentication().withUser("micro-config-template-developer").password("chibiGoku").roles("DEVELOPER");
+        auth.inMemoryAuthentication().withUser("micro-config-template-leader").password("kaioken").roles("LEAD", "DEVELOPER");
+        auth.inMemoryAuthentication().withUser("micro-config-template-god").password("gokuSSJ3").roles("ADMIN", "LEAD", "DEVELOPER");
     }
 
     @Override
