@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 @Component
 public class UsersLoader {
 
+    public static final String FILE_TO_FILTER = "users.yml";
+    public static final String ROOT_CONFIGS = "configs";
+
     private List<ConfigUser> users;
 
     public UsersLoader(){
@@ -41,11 +44,11 @@ public class UsersLoader {
     }
 
     private Collection<File> extractAllUserFiles() {
-        File file = new File("src/main/resources/configs");
+        File file = new File(getClass().getClassLoader().getResource(ROOT_CONFIGS).getFile());
         List<File> files = Arrays.stream(file.listFiles())
                 .filter(element -> element.isDirectory())
                 .flatMap(entry -> Arrays.asList(entry.listFiles()).stream())
-                .filter(entry -> entry.getName().equals("users.yml"))
+                .filter(entry -> entry.getName().equals(FILE_TO_FILTER))
                 .collect(Collectors.toList());
         return files;
     }

@@ -15,6 +15,9 @@ import java.util.stream.Collectors;
 @Component
 public class EnvironmentsLoader {
 
+    public static final String FILE_TO_FILTER = "environments.yml";
+    public static final String ROOT_CONFIGS = "configs";
+    
     private List<ConfigEnvironment> environments;
 
     public EnvironmentsLoader(){
@@ -41,11 +44,11 @@ public class EnvironmentsLoader {
     }
 
     private Collection<File> extractAllUserFiles() {
-        File file = new File("src/main/resources/configs");
+        File file = new File(getClass().getClassLoader().getResource(ROOT_CONFIGS).getFile());
         List<File> files = Arrays.stream(file.listFiles())
                 .filter(element -> element.isDirectory())
                 .flatMap(entry -> Arrays.asList(entry.listFiles()).stream())
-                .filter(entry -> entry.getName().equals("environments.yml"))
+                .filter(entry -> entry.getName().equals(FILE_TO_FILTER))
                 .collect(Collectors.toList());
         return files;
     }
