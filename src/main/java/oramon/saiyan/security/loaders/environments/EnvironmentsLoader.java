@@ -17,7 +17,7 @@ public class EnvironmentsLoader {
 
     public static final String FILE_TO_FILTER = "environments.yml";
     public static final String ROOT_CONFIGS = "configs";
-    
+
     private List<ConfigEnvironment> environments;
 
     public EnvironmentsLoader(){

@@ -1,16 +1,19 @@
-Mini-Prototype with SpringCloud
+ConfigServer
 
+* Use SpringCloud technology
+* ConfigServer is connected with a Github account which has all repositories with the configurations.
+* Implemented a system to manage users and permisions to access to the repositories 
 
-In this prototype we can access to an account of github which will have all configurations.
+In this project we have a template to be used as a sample.
 
-And our server will give credentials to the clients to access to the parts allowed by the user provided.
+To add a new microservice configuration:
 
-In the application.yml we have the configuration which our server can access to the github.
+1. Add a folder with the name of the microservice down of the folder resources/configs
+2. Each folder should have two files:
+    * users.yml -> Indicate the credentials and their roles
+    * environments.yml -> Indicate the URI and roles which can access to the URI.
 
-In URIConfigurations we will have the users with your permissions and the url's which they can access
-
-
-Client in python:
+Mini-Client in python:
 
 In the same folder of the project
 
