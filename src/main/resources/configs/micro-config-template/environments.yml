@@ -1,0 +1,8 @@
+
+environments:
+- uri: "/micro-config-template/dev"
+  roles_allowed:
+  - DEVELOPER
+- uri: "/micro-config-template/qa"
+  roles_allowed:
+  - LEAD

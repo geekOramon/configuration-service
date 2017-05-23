@@ -1,6 +1,8 @@
-package oramon.saiyan.application;
+package oramon.saiyan.security;
 
 
+import oramon.saiyan.security.loaders.user.ConfigUser;
+import oramon.saiyan.security.loaders.user.UsersLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,10 +16,14 @@ public class URIConfigurations
         extends WebSecurityConfigurerAdapter {
 
     @Autowired
+    private UsersLoader usersLoader;
+
+    @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("micro-config-template-developer").password("chibiGoku").roles("DEVELOPER");
-        auth.inMemoryAuthentication().withUser("micro-config-template-leader").password("kaioken").roles("LEAD", "DEVELOPER");
-        auth.inMemoryAuthentication().withUser("micro-config-template-god").password("gokuSSJ3").roles("ADMIN", "LEAD", "DEVELOPER");
+        for (ConfigUser user : usersLoader.users()) {
+            String[] roles = user.roles().stream().toArray(String[]::new);
+            auth.inMemoryAuthentication().withUser(user.name()).password(user.password()).roles(roles);
+        }
     }
 
     @Override
@@ -25,8 +31,7 @@ public class URIConfigurations
         http
                 .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/micro-config-template/dev").access("hasRole('ROLE_DEVELOPER')")
-                .antMatchers("/micro-config-template/qa").access("hasRole('ROLE_LEAD')");
+                .antMatchers("/micro-config-template/dev").access("hasRole('ROLE_micro-config-template-DEVELOPER')")
+                .antMatchers("/micro-config-template/qa").access("hasRole('ROLE_micro-config-template-LEAD')");
     }
-
 }

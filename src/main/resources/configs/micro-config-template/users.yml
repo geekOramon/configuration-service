@@ -1,0 +1,16 @@
+users:
+- name: micro-config-template-developer
+  password: chibiGoku
+  roles:
+  - micro-config-template-DEVELOPER
+- name: micro-config-template-leader
+  password: kaioken
+  roles:
+  - micro-config-template-LEAD
+  - micro-config-template-DEVELOPER
+- name: micro-config-template-god
+  password: gokuSSJ3
+  roles:
+  - micro-config-template-ADMIN
+  - micro-config-template-LEAD
+  - micro-config-template-DEVELOPER
