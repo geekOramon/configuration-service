@@ -23,11 +23,7 @@ public class ConfigUser {
 
     public String name(){ return name; }
     public String password(){ return password; }
-    public Collection<String> roles(){
-        List<String> newRoles = new ArrayList<>();
-        roles.stream().forEach(role -> newRoles.add(role));
-        return newRoles;
-    }
+    public Collection<String> roles(){ return new ArrayList<>(roles); }
 
     public void setName(String name) {
         this.name = name;

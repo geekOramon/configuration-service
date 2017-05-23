@@ -1,6 +1,8 @@
 package oramon.saiyan.security;
 
 
+import oramon.saiyan.security.loaders.environments.ConfigEnvironment;
+import oramon.saiyan.security.loaders.environments.EnvironmentsLoader;
 import oramon.saiyan.security.loaders.user.ConfigUser;
 import oramon.saiyan.security.loaders.user.UsersLoader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+
+import java.util.Collection;
 
 @Configuration
 @EnableWebSecurity
@@ -17,6 +22,9 @@ public class URIConfigurations
 
     @Autowired
     private UsersLoader usersLoader;
+
+    @Autowired
+    private EnvironmentsLoader environmentsLoader;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -28,10 +36,17 @@ public class URIConfigurations
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http
                 .httpBasic().and()
-                .authorizeRequests()
-                .antMatchers("/micro-config-template/dev").access("hasRole('ROLE_micro-config-template-DEVELOPER')")
-                .antMatchers("/micro-config-template/qa").access("hasRole('ROLE_micro-config-template-LEAD')");
+                .authorizeRequests();
+
+        for (ConfigEnvironment environment : environmentsLoader.environments()) {
+            Collection<String> roles = environment.getRoles_allowed();
+            for (String role : roles) {
+                String access = "hasRole('" + role + "')";
+                expressionInterceptUrlRegistry = expressionInterceptUrlRegistry
+                        .antMatchers(environment.getUri()).access(access);
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
 environments:
 - uri: "/micro-config-template/dev"
   roles_allowed:
-  - DEVELOPER
+  - micro-config-template-DEVELOPER
 - uri: "/micro-config-template/qa"
   roles_allowed:
-  - LEAD
+  - micro-config-template-LEAD
