@@ -1,0 +1,5 @@
+users:
+- name: profile-service-config-developer
+  password: kaioken
+  roles:
+  - profile-service-config-DEVELOPER

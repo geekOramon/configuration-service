@@ -1,0 +1,5 @@
+
+environments:
+- uri: "/profile-service-config/dev"
+  roles_allowed:
+  - profile-service-config-DEVELOPER

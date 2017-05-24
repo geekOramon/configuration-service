@@ -1,0 +1,16 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    config:
+      name: micro-config-template
+      profile: dev, qa
+---
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/javierOramon/{application}-{profile}
+          username:
+          password:
