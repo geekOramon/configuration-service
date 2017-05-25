@@ -2,6 +2,8 @@ package oramon.saiyan.security.loaders.environments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import oramon.utils.ResourceFile;
+import oramon.utils.ResourceFileFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -25,16 +27,15 @@ public class EnvironmentsLoader {
     }
 
     private List<ConfigEnvironment> loadUserInformation() {
-        Collection<File> files = extractAllUserFiles();
+        Collection<ResourceFile> files = extractAllUserFiles();
         List<ConfigEnvironment> users = extractUsersOfFiles(files);
         return users;
     }
 
-    private List<ConfigEnvironment> extractUsersOfFiles(Collection<File> files) {
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    private List<ConfigEnvironment> extractUsersOfFiles(Collection<ResourceFile> files) {
         return files.stream().map(userFile -> {
             try {
-                return mapper.readValue(userFile, Environments.class);
+                return userFile.readValue(Environments.class);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -43,11 +44,11 @@ public class EnvironmentsLoader {
                 .collect(Collectors.toList());
     }
 
-    private Collection<File> extractAllUserFiles() {
-        File file = new File(getClass().getClassLoader().getResource(ROOT_CONFIGS).getFile());
-        List<File> files = Arrays.stream(file.listFiles())
+    private Collection<ResourceFile> extractAllUserFiles() {
+        ResourceFile file = ResourceFileFactory.build(ROOT_CONFIGS);
+        List<ResourceFile> files = file.listFiles().stream()
                 .filter(element -> element.isDirectory())
-                .flatMap(entry -> Arrays.asList(entry.listFiles()).stream())
+                .flatMap(entry -> entry.listFiles().stream())
                 .filter(entry -> entry.getName().equals(FILE_TO_FILTER))
                 .collect(Collectors.toList());
         return files;
