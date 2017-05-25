@@ -1,13 +1,11 @@
 package oramon.saiyan.security.loaders.user;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import oramon.utils.ResourceFile;
+import oramon.utils.ResourceFileFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,16 +23,15 @@ public class UsersLoader {
     }
 
     private List<ConfigUser> loadUserInformation() {
-        Collection<File> files = extractAllUserFiles();
+        Collection<ResourceFile> files = extractAllUserFiles();
         List<ConfigUser> users = extractUsersOfFiles(files);
         return users;
     }
 
-    private List<ConfigUser> extractUsersOfFiles(Collection<File> files) {
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+    private List<ConfigUser> extractUsersOfFiles(Collection<ResourceFile> files) {
         return files.stream().map(userFile -> {
                 try {
-                    return mapper.readValue(userFile, Users.class);
+                    return userFile.readValue(Users.class);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
@@ -43,11 +40,11 @@ public class UsersLoader {
                     .collect(Collectors.toList());
     }
 
-    private Collection<File> extractAllUserFiles() {
-        File file = new File(getClass().getClassLoader().getResource(ROOT_CONFIGS).getFile());
-        List<File> files = Arrays.stream(file.listFiles())
+    private Collection<ResourceFile> extractAllUserFiles() {
+        ResourceFile file = ResourceFileFactory.build(ROOT_CONFIGS);
+        List<ResourceFile> files = file.listFiles().stream()
                 .filter(element -> element.isDirectory())
-                .flatMap(entry -> Arrays.asList(entry.listFiles()).stream())
+                .flatMap(entry -> entry.listFiles().stream())
                 .filter(entry -> entry.getName().equals(FILE_TO_FILTER))
                 .collect(Collectors.toList());
         return files;
