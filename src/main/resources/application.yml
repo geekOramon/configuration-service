@@ -15,4 +15,4 @@ spring:
           username:
           password:
 ---
-root_configs: configs
+root_configs: ${directory_for_root_configs}
