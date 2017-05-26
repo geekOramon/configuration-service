@@ -28,7 +28,7 @@ public class URIConfigurations
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        for (ConfigUser user : usersLoader.users()) {
+        for (ConfigUser user : usersLoader.loadUserInformation()) {
             String[] roles = user.roles().stream().toArray(String[]::new);
             auth.inMemoryAuthentication().withUser(user.name()).password(user.password()).roles(roles);
         }
@@ -40,7 +40,7 @@ public class URIConfigurations
                 .httpBasic().and()
                 .authorizeRequests();
 
-        for (ConfigEnvironment environment : environmentsLoader.environments()) {
+        for (ConfigEnvironment environment : environmentsLoader.loadUserInformation()) {
             Collection<String> roles = environment.getRoles_allowed();
             for (String role : roles) {
                 String access = "hasRole('" + role + "')";

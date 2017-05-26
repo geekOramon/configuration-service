@@ -1,15 +1,11 @@
 package oramon.saiyan.security.loaders.environments;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import oramon.utils.ResourceFile;
 import oramon.utils.ResourceFileFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,15 +14,14 @@ import java.util.stream.Collectors;
 public class EnvironmentsLoader {
 
     public static final String FILE_TO_FILTER = "environments.yml";
-    public static final String ROOT_CONFIGS = "configs";
 
-    private List<ConfigEnvironment> environments;
+    @Value("${root_configs}")
+    private String ROOT_CONFIGS;
 
     public EnvironmentsLoader(){
-        environments = loadUserInformation();
     }
 
-    private List<ConfigEnvironment> loadUserInformation() {
+    public List<ConfigEnvironment> loadUserInformation() {
         Collection<ResourceFile> files = extractAllUserFiles();
         List<ConfigEnvironment> users = extractUsersOfFiles(files);
         return users;
@@ -54,5 +49,4 @@ public class EnvironmentsLoader {
         return files;
     }
 
-    public Collection<ConfigEnvironment> environments(){return new ArrayList<ConfigEnvironment>(environments); }
 }
