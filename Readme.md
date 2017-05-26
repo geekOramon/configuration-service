@@ -19,3 +19,10 @@ In the same folder of the project
 
 
 python attack_url.py --url "http://localhost:8888/your_url" --user youruser --pass yourpass
+
+
+Environment variables:
+
+    * server_port
+    * git_account
+    * directory_for_root_configs
