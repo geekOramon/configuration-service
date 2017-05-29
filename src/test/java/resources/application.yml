@@ -11,6 +11,6 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/javierOramon/{application}-{profile}
+          uri: https://github.com/geekOramon/{application}-{profile}
           username:
           password:
