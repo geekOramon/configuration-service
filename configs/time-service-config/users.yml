@@ -1,0 +1,5 @@
+users:
+- name: time-service-config-developer
+  password: kaiokentimesten
+  roles:
+  - time-service-config-DEVELOPER
