@@ -1,5 +1,5 @@
 
 environments:
-- uri: "/time-service-config/dev"
+- uri: "/time-service-config/*"
   roles_allowed:
   - time-service-config-DEVELOPER
