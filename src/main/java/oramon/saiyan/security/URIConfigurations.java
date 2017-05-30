@@ -48,5 +48,7 @@ public class URIConfigurations
                         .antMatchers(environment.getUri()).access(access);
             }
         }
+
+        expressionInterceptUrlRegistry = expressionInterceptUrlRegistry.anyRequest().denyAll();
     }
 }
