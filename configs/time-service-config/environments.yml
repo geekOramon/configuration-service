@@ -1,5 +1,11 @@
 
 environments:
-- uri: "/time-service-config/*"
+- uri: "/time-service-config/dev"
+  roles_allowed:
+  - time-service-config-DEVELOPER
+- uri: "/time-service-config-dev.yml"
+  roles_allowed:
+  - time-service-config-DEVELOPER
+- uri: "/time-service-config-qa.yml"
   roles_allowed:
   - time-service-config-DEVELOPER
