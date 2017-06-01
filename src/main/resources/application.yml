@@ -3,16 +3,16 @@ server:
 spring:
   cloud:
     config:
-      name: micro-config-template
-      profile: dev, qa
----
-spring:
-  cloud:
-    config:
       server:
         git:
           uri: ${git_account}/{application}-${profile_spring_cloud}
           username: ${git_user_name}
           password: ${git_user_password}
 ---
+security:
+  basic:
+    enabled: ${enable_basic_security}
+  user:
+    name: ${basic_security_user}
+    password: ${basic_security_password}
 root_configs: ${directory_for_root_configs}

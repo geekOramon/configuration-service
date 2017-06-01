@@ -6,6 +6,7 @@ import oramon.saiyan.security.loaders.environments.EnvironmentsLoader;
 import oramon.saiyan.security.loaders.user.ConfigUser;
 import oramon.saiyan.security.loaders.user.UsersLoader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,6 +22,15 @@ import java.util.List;
 public class URIConfigurations
         extends WebSecurityConfigurerAdapter {
 
+    @Value("${security.basic.enabled}")
+    private boolean basicAuthEnabled;
+
+    @Value("${security.user.name}")
+    private String basicUser;
+
+    @Value("${security.user.password}")
+    private String basicPassword;
+
     @Autowired
     private UsersLoader usersLoader;
 
@@ -29,6 +39,15 @@ public class URIConfigurations
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        if(basicAuthEnabled){
+            auth.inMemoryAuthentication().withUser(basicUser).password(basicPassword).roles("USER");
+        }else{
+            loadUsersFromConfigs(auth);
+        }
+
+    }
+
+    private void loadUsersFromConfigs(AuthenticationManagerBuilder auth) throws Exception {
         for (ConfigUser user : usersLoader.loadUserInformation()) {
             String[] roles = user.roles().stream().toArray(String[]::new);
             auth.inMemoryAuthentication().withUser(user.name()).password(user.password()).roles(roles);
@@ -37,8 +56,16 @@ public class URIConfigurations
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        if(basicAuthEnabled){
+            http.authorizeRequests().anyRequest().authenticated().and().httpBasic();
+        } else {
+            loadEnvironmentsFromConfigs(http);
+        }
+    }
+
+    private void loadEnvironmentsFromConfigs(HttpSecurity http) throws Exception {
         final List<ConfigEnvironment> urlsToFilter = environmentsLoader.loadUserInformation();
-        if(urlsToFilter.isEmpty()) return;
+        if (urlsToFilter.isEmpty()) return;
 
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http
                 .httpBasic().and()
