@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 
 import java.util.Collection;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -36,11 +37,14 @@ public class URIConfigurations
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        final List<ConfigEnvironment> urlsToFilter = environmentsLoader.loadUserInformation();
+        if(urlsToFilter.isEmpty()) return;
+
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry = http
                 .httpBasic().and()
                 .authorizeRequests();
 
-        for (ConfigEnvironment environment : environmentsLoader.loadUserInformation()) {
+        for (ConfigEnvironment environment : urlsToFilter) {
             Collection<String> roles = environment.getRoles_allowed();
             for (String role : roles) {
                 String access = "hasRole('" + role + "')";

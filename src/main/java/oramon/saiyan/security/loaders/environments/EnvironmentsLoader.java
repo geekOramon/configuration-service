@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,8 @@ public class EnvironmentsLoader {
 
     private Collection<ResourceFile> extractAllUserFiles() {
         ResourceFile file = ResourceFileFactory.build(ROOT_CONFIGS);
+        if(file == null) return Collections.emptyList();
+
         List<ResourceFile> files = file.listFiles().stream()
                 .filter(element -> element.isDirectory())
                 .flatMap(entry -> entry.listFiles().stream())
