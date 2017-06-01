@@ -25,4 +25,5 @@ Environment variables:
 
     * server_port
     * git_account
+    * profile_spring_cloud - (dev, qa, prod, {profile})
     * directory_for_root_configs
