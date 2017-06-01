@@ -12,7 +12,7 @@ spring:
       server:
         git:
           uri: ${git_account}/{application}-${profile_spring_cloud}
-          username:
-          password:
+          username: ${git_user_name}
+          password: ${git_user_password}
 ---
 root_configs: ${directory_for_root_configs}

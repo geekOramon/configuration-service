@@ -25,5 +25,7 @@ Environment variables:
 
     * server_port
     * git_account
+    * git_user_name
+    * git_user_password
     * profile_spring_cloud - (dev, qa, prod, {profile})
     * directory_for_root_configs
